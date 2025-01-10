@@ -72,7 +72,6 @@ impl TryFrom<&[i16]> for Color {
             return Ok(Color{red:x as u8,green:y as u8,blue:z as u8});
         }
     }
-    
 }
 
 fn main() {
