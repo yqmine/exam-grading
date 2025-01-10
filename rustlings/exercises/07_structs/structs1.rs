@@ -6,7 +6,7 @@ struct ColorRegularStruct {
     blue:i32
 }
 
-struct ColorTupleStruct(/* TODO: Add the fields that the test `tuple_structs` expects */);
+struct ColorTupleStruct(u8,u8,u8);
 
 #[derive(Debug)]
 struct UnitStruct;
