@@ -9,7 +9,7 @@ fn main() {
     let pi:f32 = 3.14;
     let radius: f32 = 5.0;
 
-    let area = pi * radius.powi(2);
+    let area:f32 = pi * radius.powi(2);
 
     println!("The area of a circle with radius {radius:.2} is {area:.5}");
 }
