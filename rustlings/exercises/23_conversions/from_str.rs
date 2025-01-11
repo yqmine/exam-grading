@@ -43,7 +43,7 @@ impl FromStr for Person {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let res:Vec<&str>=s.split(',').collect();
-        if res.len()<2{
+        if res.len()<2|| res.len()>2{
             return Err(ParsePersonError::BadLen);
         }else {
             if res[0].to_string().len() ==0 {
