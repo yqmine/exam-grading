@@ -28,4 +28,5 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         tokens -= cost;
         println!("You now have {tokens} tokens.");
     }
+    return Ok(());    
 }
