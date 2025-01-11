@@ -13,10 +13,10 @@ enum DivisionError {
 fn divide(a: i64, b: i64) -> Result<i64, DivisionError> {
     if b==0  {
         return Err(DivisionError::DivideByZero);
-    }else if a%b !=0 {
-        return Err(DivisionError::NotDivisible);
     }else if b==-1 && a==i64::MIN {
         return Err(DivisionError::IntegerOverflow);
+    }else if a%b !=0 {
+        return Err(DivisionError::NotDivisible);
     }else{
         return Ok(a/b);
     }
@@ -41,6 +41,14 @@ fn list_of_results() -> Vec<Result<i64, DivisionError>> {
 
 fn main() {
     // You can optionally experiment here.
+    assert_eq!(divide(81, 9), Ok(9));
+    assert_eq!(divide(81, 0), Err(DivisionError::DivideByZero));
+    assert_eq!(divide(i64::MIN, -1), Err(DivisionError::IntegerOverflow));
+    assert_eq!(divide(81, 6), Err(DivisionError::NotDivisible));
+    assert_eq!(divide(0, 81), Ok(0));
+    assert_eq!(result_with_list().unwrap(), [1, 11, 1426, 3]);
+    assert_eq!(list_of_results(), [Ok(1), Ok(11), Ok(1426), Ok(3)]);
+
 }
 
 #[cfg(test)]
