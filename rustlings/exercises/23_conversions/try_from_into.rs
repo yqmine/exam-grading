@@ -29,12 +29,21 @@ impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
 
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
-        let (x,y,z)=tuple;
-        if x<0&&x>255 || y<0&&y>255 ||z<0&&z>255 {
+        let (Ok(red), Ok(green), Ok(blue)) = (
+            u8::try_from(tuple.0),
+            u8::try_from(tuple.1),
+            u8::try_from(tuple.2),
+        ) else {
             return Err(IntoColorError::IntConversion);
-        }else{
-            return Ok(Color{red:x as u8,green:y as u8 ,blue:z as u8});
-        }
+        };
+
+        Ok(Self { red, green, blue })
+        // let (x,y,z)=tuple;
+        // if x<0&&x>255 || y<0&&y>255 ||z<0&&z>255 {
+        //     return Err(IntoColorError::IntConversion);
+        // }else{
+        //     return Ok(Self{red:x as u8,green:y as u8 ,blue:z as u8});
+        // }
     }
 }
 
@@ -43,14 +52,15 @@ impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
 
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
-        let x=arr[0];
-        let y=arr[1];
-        let z=arr[2];
-        if x<0&&x>255 || y<0&&y>255 ||z<0&&z>255 {
-            return Err(IntoColorError::IntConversion);
-        }else{
-            return Ok(Color{red:x as u8,green:y as u8,blue:z as u8});
-        }
+        // let x=arr[0];
+        // let y=arr[1];
+        // let z=arr[2];
+        // if x<0&&x>255 || y<0&&y>255 ||z<0&&z>255 {
+        //     return Err(IntoColorError::IntConversion);
+        // }else{
+        //     return Ok(Color{red:x as u8,green:y as u8,blue:z as u8});
+        // }
+        Self::try_from((arr[0], arr[1], arr[2]))
     }
 }
 
@@ -66,11 +76,12 @@ impl TryFrom<&[i16]> for Color {
         let x=slice[0];
         let y=slice[1];
         let z=slice[2];
-        if x<0&&x>255 || y<0&&y>255 ||z<0&&z>255 {
-            return Err(IntoColorError::IntConversion);
-        }else{
-            return Ok(Color{red:x as u8,green:y as u8,blue:z as u8});
-        }
+        // if x<0&&x>255 || y<0&&y>255 ||z<0&&z>255 {
+        //     return Err(IntoColorError::IntConversion);
+        // }else{
+        //     return Ok(Color{red:x as u8,green:y as u8,blue:z as u8});
+        // }
+        Self::try_from((x,y,z))
     }
 }
 
@@ -90,6 +101,24 @@ fn main() {
     // or put the slice within round brackets and use `try_into`.
     let c4: Result<Color, _> = (&v[..]).try_into();
     println!("{c4:?}");
+
+    let c: Result<Color, _> = [-1, 255, 255].try_into();
+    assert_eq!(c, Err(IntoColorError::IntConversion));
+
+    let v = vec![183, 65, 14];
+    let c: Result<Color, _> = Color::try_from(&v[..]);
+    assert!(c.is_ok());
+    assert_eq!(
+        c.unwrap(),
+        Color {
+            red: 183,
+            green: 65,
+            blue: 14,
+        }
+    );
+
+    let v = vec![0, 0, 0, 0];
+    assert_eq!(Color::try_from(&v[..]), Err(IntoColorError::BadLen));
 }
 
 #[cfg(test)]
