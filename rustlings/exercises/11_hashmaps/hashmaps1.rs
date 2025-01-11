@@ -22,7 +22,7 @@ fn fruit_basket() -> HashMap<String, u32> {
     basket.insert(String::from("e"), 2);
     basket.insert(String::from("f"), 2);
     basket.insert(String::from("g"), 2);
-    
+    return basket;
 }
 
 fn main() {
